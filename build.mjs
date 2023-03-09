@@ -1,4 +1,4 @@
-const fs = require("fs");
+import fs from "fs";
 
 const loadSource = async () => {
   const text = fs.readFileSync("./synonyms.txt").toString();
@@ -16,9 +16,10 @@ const loadSource = async () => {
       });
     });
 
-  const content = `module.exports.medicalSynonyms = ${JSON.stringify(out)}`;
+  const content = `export const medicalSynonyms = ${JSON.stringify(out)}`;
 
-  fs.writeFile("index.js", content, (err) => {
+  fs.mkdirSync("src", { recursive: true });
+  fs.writeFile("src/index.ts", content, (err) => {
     if (err) {
       console.error(err);
     }
