@@ -1,6 +1,6 @@
 {
   "name": "meilisearch-medical-synonyms",
-  "version": "1.2.18",
+  "version": "1.2.19",
   "description": "List of common medical terms to be used in a meilisearch index as a synonym list",
   "main": "build/index.js",
   "module": "build/index.es.mjs",
@@ -55,7 +55,7 @@
     "typescript": "^5.0.0",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
-    "eslint-config-prettier": "^8.7.0",
+    "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^4.2.1"
   },
   "config": {
