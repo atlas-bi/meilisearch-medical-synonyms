@@ -1,29 +1,31 @@
-import fs from "fs";
+import fs from "node:fs";
 
-const loadSource = async () => {
+const loadSource = () => {
   const text = fs.readFileSync("./synonyms.txt").toString();
 
-  let out = {};
+  const out = {};
 
   text
-    .replace(/\#.*?$/gm, "") // remove comments
+    .replace(/#.*?$/gm, "") // remove comments
     .split(/\r?\n/)
     .filter((line) => line)
     .forEach((line) => {
       const words = line.split(",");
       words.forEach((word) => {
-        out[word] = [...words.filter((x) => x != word).map((x) => x.trim())];
+        const synonyms = words.filter((x) => x !== word).map((x) => x.trim());
+        out[word.trim()] = [...synonyms];
       });
     });
 
-  const content = `export const medicalSynonyms = ${JSON.stringify(out)}`;
+  const json = JSON.stringify(out);
 
-  fs.mkdirSync("src", { recursive: true });
-  fs.writeFile("src/index.ts", content, (err) => {
-    if (err) {
-      console.error(err);
-    }
-  });
+  fs.mkdirSync("build", { recursive: true });
+  fs.writeFileSync("build/index.js", `exports.medicalSynonyms = ${json};\n`);
+  fs.writeFileSync("build/index.es.mjs", `export const medicalSynonyms = ${json};\n`);
+  fs.writeFileSync(
+    "build/index.d.ts",
+    "export declare const medicalSynonyms: Record<string, string[]>;\n",
+  );
 };
 
 loadSource();
